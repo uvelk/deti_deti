@@ -65,11 +65,11 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    /* Жесткая блокировка горизонтальной прокрутки */
+    /* Жесткая блокировка любой прокрутки вбок */
     html, body { 
       scroll-behavior: smooth; 
       width: 100%;
-      max-width: 100vw;
+      max-width: 100%;
       overflow-x: hidden; 
       position: relative;
     }
@@ -80,7 +80,15 @@
       color: var(--ink);
       background-color: var(--bg-light);
       line-height: 1.5;
-      -webkit-text-size-adjust: 100%; /* Запрет на авто-уменьшение шрифта на iOS */
+      -webkit-text-size-adjust: 100%;
+      word-wrap: break-word; /* Защита от длинных слов */
+    }
+
+    /* Обертка для обрезки всего лишнего */
+    .page-wrapper {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
     }
     
     h1, h2, h3, h4, .logo-text, .footer-logo { 
@@ -121,8 +129,8 @@
       opacity: 0.15;
       z-index: -1;
       animation: blobMorph 12s infinite alternate ease-in-out;
-      /* Скрываем всё, что вылезает за пределы */
       pointer-events: none; 
+      max-width: 100%; /* Ограничиваем ширину */
     }
     .blob-1 { width: 400px; height: 400px; background: var(--c-armenia); top: -100px; right: -100px; }
     .blob-2 { width: 300px; height: 300px; background: var(--c-belarus); top: 40%; left: -150px; animation-delay: -2s; }
@@ -254,12 +262,8 @@
       transform: rotate(-2deg) scale(1.05);
       margin: 40px 0;
       display: flex;
-      width: 100vw;
+      width: 100%; /* Убрано 100vw, чтобы не ломать мобильную верстку */
       position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
     }
     .marquee-content {
       display: flex;
@@ -296,7 +300,7 @@
     }
     .section-title.left { text-align: left; }
 
-    /* ==================== БЕЛАЯ СЕКЦИЯ (УЧАСТНИКИ) ==================== */
+    /* ==================== БЕЛАЯ СЕКЦИЯ ==================== */
     .white-section {
       background: var(--white); 
       border-radius: 40px; 
@@ -517,7 +521,7 @@
       border: 1px solid #ddd;
       border-radius: 8px;
       font-family: var(--font-main);
-      font-size: 16px; /* Важно: 16px предотвращает авто-зум на iPhone */
+      font-size: 16px; /* 16px предотвращает авто-зум на iPhone */
       outline: none;
       transition: border 0.3s;
     }
@@ -620,13 +624,10 @@
 
     /* Телефоны (до 768px) */
     @media (max-width: 768px) {
-      /* Отключаем наклон бегущей строки, чтобы она не создавала лишнюю ширину */
+      /* Отключаем наклон бегущей строки */
       .marquee-wrapper { 
         transform: none; 
         margin: 20px 0;
-        width: 100%;
-        left: 0;
-        margin-left: 0;
       }
 
       /* Шапка */
@@ -639,9 +640,9 @@
       .hero-grid { grid-template-columns: 1fr; text-align: center; }
       .hero-art { order: -1; margin-bottom: 20px; }
       .hero-desc { margin: 0 auto 30px; max-width: 100%; font-size: 1rem; }
-      .hero h1 { font-size: 2.2rem; } /* Увеличен размер */
+      .hero h1 { font-size: 2.2rem; } 
       .hero-actions { flex-direction: column; }
-      .btn { width: 100%; padding: 14px 24px; font-size: 1.1rem; } /* Кнопки на всю ширину */
+      .btn { width: 100%; padding: 14px 24px; font-size: 1.1rem; } 
       .hero-logo-main { max-width: 220px; }
       
       /* Бегущие строки */
@@ -652,17 +653,17 @@
       /* Секции и сетки */
       .section { padding: 40px 0; }
       .section-title { font-size: 1.8rem; margin-bottom: 25px; }
-      .section-title.left { text-align: center; } /* Центрируем заголовки на телефоне */
+      .section-title.left { text-align: center; } 
       
-      /* Белая секция (Кто участвует) */
+      /* Белая секция */
       .white-section { 
-        margin: 0 10px; /* Уменьшаем отступы по бокам */
+        margin: 0 10px; 
         border-radius: 20px; 
         padding: 30px 15px;
       }
       
       .grid-4, .grid-2, .merch-grid, .patterns-grid { grid-template-columns: 1fr; }
-      .card-img { height: 220px; } /* Картинки чуть выше */
+      .card-img { height: 220px; } 
       
       /* Модальные окна */
       .modal-content { padding: 25px 20px; max-height: 95vh; width: calc(100% - 20px); }
@@ -677,7 +678,7 @@
 
     /* Очень маленькие телефоны (до 480px) */
     @media (max-width: 480px) {
-      .container { padding: 0 15px; } /* Уменьшаем поля */
+      .container { padding: 0 15px; } 
       .logo-text { font-size: 1.1rem; }
       .logo-sub { font-size: 0.65rem; }
       .header-logo-img { width: 45px; height: 45px; }
@@ -692,262 +693,267 @@
 </head>
 <body>
 
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+  <!-- Обертка для защиты от горизонтальной прокрутки -->
+  <div class="page-wrapper">
 
-  <header class="header">
-    <div class="container header-inner">
-      <div class="logo-block" onclick="switchPage('index')">
-        <img src="logo_color.png" alt="Логотип" class="header-logo-img">
-        <div>
-          <div class="logo-text">Дети — Детям</div>
-          <div class="logo-sub">Школа дипломатии</div>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <header class="header">
+      <div class="container header-inner">
+        <div class="logo-block" onclick="switchPage('index')">
+          <img src="logo_color.png" alt="Логотип" class="header-logo-img">
+          <div>
+            <div class="logo-text">Дети — Детям</div>
+            <div class="logo-sub">Школа дипломатии</div>
+          </div>
         </div>
+        <nav class="nav">
+          <div id="nav-index" class="nav-link active" onclick="switchPage('index')">О проекте</div>
+          <div id="nav-brandbook" class="nav-link" onclick="switchPage('brandbook')">Айдентика</div>
+        </nav>
       </div>
-      <nav class="nav">
-        <div id="nav-index" class="nav-link active" onclick="switchPage('index')">О проекте</div>
-        <div id="nav-brandbook" class="nav-link" onclick="switchPage('brandbook')">Айдентика</div>
-      </nav>
-    </div>
-  </header>
+    </header>
 
-  <main id="page-index" class="page-view active">
-    
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="reveal">
-          <h1>Учимся дружить<br><span>Создаём <br> мир</span></h1>
-          <p class="hero-desc">
-            Международный проект, где школьники 10–14 лет из России, Армении, Беларуси, Кыргызстана и Таджикистана объединяются для творчества и дипломатии.
-          </p>
-          <div class="hero-actions" style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <button class="btn btn-primary" onclick="scrollToSection('about')">Узнать больше</button>
-            <button class="btn btn-blue" onclick="switchPage('brandbook')">Смотреть стиль</button>
+    <main id="page-index" class="page-view active">
+      
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <h1>Учимся дружить<br><span>Создаём <br> мир</span></h1>
+            <p class="hero-desc">
+              Международный проект, где школьники 10–14 лет из России, Армении, Беларуси, Кыргызстана и Таджикистана объединяются для творчества и дипломатии.
+            </p>
+            <div class="hero-actions" style="display: flex; gap: 15px; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="scrollToSection('about')">Узнать больше</button>
+              <button class="btn btn-blue" onclick="switchPage('brandbook')">Смотреть стиль</button>
+            </div>
+          </div>
+          <div class="hero-art reveal" style="transition-delay: 0.2s;">
+            <img src="logo_color.png" alt="Главный логотип" class="hero-logo-main">
           </div>
         </div>
-        <div class="hero-art reveal" style="transition-delay: 0.2s;">
-          <img src="logo_color.png" alt="Главный логотип" class="hero-logo-main">
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <div class="marquee-wrapper">
-      <div class="marquee-content">
-        <div class="marquee-block">
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-        </div>
-        <div class="marquee-block">
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
-        </div>
-      </div>
-    </div>
-
-    <section class="section" id="about">
-      <div class="container">
-        <h2 class="section-title reveal">Что мы делаем?</h2>
-        
-        <div class="grid-4">
-          <div class="card-bright reveal" onclick="openActivityModal('telemos')">
-            <img src="children1.jpg" alt="Телемосты" class="card-img">
-            <h3>Телемосты</h3>
-            <p>Регулярное общение и обмен опытом между школьниками из разных стран в режиме реального времени.</p>
+      <div class="marquee-wrapper">
+        <div class="marquee-content">
+          <div class="marquee-block">
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
           </div>
-
-          <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openActivityModal('master')">
-            <img src="children2.jpg" alt="Мастер-классы" class="card-img">
-            <h3>Мастер-классы</h3>
-            <p>Создаем видеоролики, пишем декларации и рисуем. Учимся каллиграфии и русскому языку.</p>
-          </div>
-
-          <div class="card-bright reveal" style="transition-delay: 0.2s;" onclick="openActivityModal('culture')">
-            <img src="children3.jpg" alt="Культурный обмен" class="card-img">
-            <h3>Культурный обмен</h3>
-            <p>Реальные визиты делегаций в страны-партнеры, знакомство с традициями и обычаями.</p>
-          </div>
-
-          <div class="card-bright reveal" style="transition-delay: 0.3s;" onclick="openActivityModal('products')">
-            <img src="children4.png" alt="Итоговые продукты" class="card-img">
-            <h3>Итоговые продукты</h3>
-            <p>Создание общего Манифеста Мира, книжки-сказки и проведение передвижных выставок.</p>
+          <div class="marquee-block">
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+            МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="section white-section">
-      <div class="container">
-        <h2 class="section-title left reveal">Кто участвует?</h2>
-        <div class="grid-2">
-          <div class="card-bright reveal" onclick="openModal()">
-            <div class="pill pill-blue">Основные участники</div>
-            <h3>Дети 10–14 лет</h3>
-            <p>Любознательные школьники, готовые творить, общаться и узнавать новое о культурах других стран. <b>(Нажмите для записи)</b></p>
-          </div>
-          <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openModal()">
-            <div class="pill pill-orange">Помощники</div>
-            <h3>Наставники и дипломаты</h3>
-            <p>Педагоги, эксперты и дипломаты, которые поддерживают ребят и делятся своим опытом. <b>(Нажмите для записи)</b></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <main id="page-brandbook" class="page-view">
-    <section class="section" style="padding-bottom: 0;"> 
-      <div class="container">
-        <h2 class="section-title">Визуальный стиль</h2>
-
-        <div class="logo-display">
-          <div class="logo-box">
-            <img src="logo_color.png" alt="Основной" class="logo-img-display">
-            <h4>Основная версия</h4>
-          </div>
-          <div class="logo-box">
-            <img src="logo_black.png" alt="Черно-белая версия" class="logo-img-display">
-            <h4>Черно-белая версия</h4>
-          </div>
-          <div class="logo-box">
-            <span class="motto-label">Слоган</span>
-            <div class="motto-text">Язык дружбы — язык мира</div>
-          </div>
-        </div>
-
-        <h2 class="section-title left" style="margin-top: 80px;">Цвета проекта</h2>
-        <div class="color-grid">
-          <div class="color-swatch">
-            <div class="swatch-visual" style="background: #44ACDC;"></div>
-            <div class="swatch-info">
-              <span class="swatch-hex">#44ACDC</span>
-              <div class="swatch-desc"><b>Кыргызстан.</b> Цвет высокого неба и горных вершин.</div>
-            </div>
-          </div>
-          <div class="color-swatch">
-            <div class="swatch-visual" style="background: #1C62A5;"></div>
-            <div class="swatch-info">
-              <span class="swatch-hex">#1C62A5</span>
-              <div class="swatch-desc"><b>Беларусь.</b> Цвет мира, стабильности и мудрости.</div>
-            </div>
-          </div>
-          <div class="color-swatch">
-            <div class="swatch-visual" style="background: #F58E25;"></div>
-            <div class="swatch-info">
-              <span class="swatch-hex">#F58E25</span>
-              <div class="swatch-desc"><b>Армения.</b> Тепло солнца, энергия и гостеприимство.</div>
-            </div>
-          </div>
-          <div class="color-swatch">
-            <div class="swatch-visual" style="background: #E33C3B;"></div>
-            <div class="swatch-info">
-              <span class="swatch-hex">#E33C3B</span>
-              <div class="swatch-desc"><b>Россия.</b> Цвет силы, смелости и исторического величия.</div>
-            </div>
-          </div>
-          <div class="color-swatch">
-            <div class="swatch-visual" style="background: #27A66E;"></div>
-            <div class="swatch-info">
-              <span class="swatch-hex">#27A66E</span>
-              <div class="swatch-desc"><b>Таджикистан.</b> Цвет плодородия, молодости и процветания.</div>
-            </div>
-          </div>
-        </div>
-
-        <h2 class="section-title left" style="margin-top: 80px;">Паттерны и графика</h2>
-        
-        <div class="patterns-grid">
-          <div class="pattern-item">
-            <img src="patt1.png" alt="Паттерн 1" class="pattern-img">
-          </div>
-          <div class="pattern-item">
-            <img src="patt2.png" alt="Паттерн 2" class="pattern-img">
-          </div>
-        </div>
-
-        <h2 class="section-title left" style="margin-top: 80px;">Мерч и полиграфия</h2>
-        <div class="merch-grid">
+      <section class="section" id="about">
+        <div class="container">
+          <h2 class="section-title reveal">Что мы делаем?</h2>
           
-          <div class="merch-card">
-            <div class="merch-image-placeholder bg-img-business">
-              <span class="merch-label">Пример: визитки и бейджи</span>
+          <div class="grid-4">
+            <div class="card-bright reveal" onclick="openActivityModal('telemos')">
+              <img src="children1.jpg" alt="Телемосты" class="card-img">
+              <h3>Телемосты</h3>
+              <p>Регулярное общение и обмен опытом между школьниками из разных стран в режиме реального времени.</p>
             </div>
-            <div class="merch-info">
-              <h3>Визитки и бейджи</h3>
-              <p>Строгий и современный дизайн для официальных встреч, форумов и работы делегаций.</p>
+
+            <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openActivityModal('master')">
+              <img src="children2.jpg" alt="Мастер-классы" class="card-img">
+              <h3>Мастер-классы</h3>
+              <p>Создаем видеоролики, пишем декларации и рисуем. Учимся каллиграфии и русскому языку.</p>
+            </div>
+
+            <div class="card-bright reveal" style="transition-delay: 0.2s;" onclick="openActivityModal('culture')">
+              <img src="children3.jpg" alt="Культурный обмен" class="card-img">
+              <h3>Культурный обмен</h3>
+              <p>Реальные визиты делегаций в страны-партнеры, знакомство с традициями и обычаями.</p>
+            </div>
+
+            <div class="card-bright reveal" style="transition-delay: 0.3s;" onclick="openActivityModal('products')">
+              <img src="children4.png" alt="Итоговые продукты" class="card-img">
+              <h3>Итоговые продукты</h3>
+              <p>Создание общего Манифеста Мира, книжки-сказки и проведение передвижных выставок.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section white-section">
+        <div class="container">
+          <h2 class="section-title left reveal">Кто участвует?</h2>
+          <div class="grid-2">
+            <div class="card-bright reveal" onclick="openModal()">
+              <div class="pill pill-blue">Основные участники</div>
+              <h3>Дети 10–14 лет</h3>
+              <p>Любознательные школьники, готовые творить, общаться и узнавать новое о культурах других стран. <b>(Нажмите для записи)</b></p>
+            </div>
+            <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openModal()">
+              <div class="pill pill-orange">Помощники</div>
+              <h3>Наставники и дипломаты</h3>
+              <p>Педагоги, эксперты и дипломаты, которые поддерживают ребят и делятся своим опытом. <b>(Нажмите для записи)</b></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <main id="page-brandbook" class="page-view">
+      <section class="section" style="padding-bottom: 0;"> 
+        <div class="container">
+          <h2 class="section-title">Визуальный стиль</h2>
+
+          <div class="logo-display">
+            <div class="logo-box">
+              <img src="logo_color.png" alt="Основной" class="logo-img-display">
+              <h4>Основная версия</h4>
+            </div>
+            <div class="logo-box">
+              <img src="logo_black.png" alt="Черно-белая версия" class="logo-img-display">
+              <h4>Черно-белая версия</h4>
+            </div>
+            <div class="logo-box">
+              <span class="motto-label">Слоган</span>
+              <div class="motto-text">Язык дружбы — язык мира</div>
             </div>
           </div>
 
-          <div class="merch-card">
-            <div class="merch-image-placeholder bg-img-letter">
-              <span class="merch-label">Пример: благодарственное письмо</span>
+          <h2 class="section-title left" style="margin-top: 80px;">Цвета проекта</h2>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="swatch-visual" style="background: #44ACDC;"></div>
+              <div class="swatch-info">
+                <span class="swatch-hex">#44ACDC</span>
+                <div class="swatch-desc"><b>Кыргызстан.</b> Цвет высокого неба и горных вершин.</div>
+              </div>
             </div>
-            <div class="merch-info">
-              <h3>Благодарственные письма</h3>
-              <p>Официальные благодарности партнёрам, педагогам и участникам проекта за вклад в развитие детской дипломатии.</p>
+            <div class="color-swatch">
+              <div class="swatch-visual" style="background: #1C62A5;"></div>
+              <div class="swatch-info">
+                <span class="swatch-hex">#1C62A5</span>
+                <div class="swatch-desc"><b>Беларусь.</b> Цвет мира, стабильности и мудрости.</div>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-visual" style="background: #F58E25;"></div>
+              <div class="swatch-info">
+                <span class="swatch-hex">#F58E25</span>
+                <div class="swatch-desc"><b>Армения.</b> Тепло солнца, энергия и гостеприимство.</div>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-visual" style="background: #E33C3B;"></div>
+              <div class="swatch-info">
+                <span class="swatch-hex">#E33C3B</span>
+                <div class="swatch-desc"><b>Россия.</b> Цвет силы, смелости и исторического величия.</div>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="swatch-visual" style="background: #27A66E;"></div>
+              <div class="swatch-info">
+                <span class="swatch-hex">#27A66E</span>
+                <div class="swatch-desc"><b>Таджикистан.</b> Цвет плодородия, молодости и процветания.</div>
+              </div>
             </div>
           </div>
 
-          <div class="merch-card">
-            <div class="merch-image-placeholder bg-img-merch">
-              <span class="merch-label">Пример: сувенирная продукция</span>
+          <h2 class="section-title left" style="margin-top: 80px;">Паттерны и графика</h2>
+          
+          <div class="patterns-grid">
+            <div class="pattern-item">
+              <img src="patt1.png" alt="Паттерн 1" class="pattern-img">
             </div>
-            <div class="merch-info">
-              <h3>Сувенирная продукция</h3>
-              <p>Блокноты, ручки, значки и шопперы с фирменной символикой для участников и партнеров.</p>
+            <div class="pattern-item">
+              <img src="patt2.png" alt="Паттерн 2" class="pattern-img">
             </div>
           </div>
 
-          <div class="merch-card">
-            <div class="merch-image-placeholder bg-img-print">
-              <span class="merch-label">Пример: баннеры и грамоты</span>
+          <h2 class="section-title left" style="margin-top: 80px;">Мерч и полиграфия</h2>
+          <div class="merch-grid">
+            
+            <div class="merch-card">
+              <div class="merch-image-placeholder bg-img-business">
+                <span class="merch-label">Пример: визитки и бейджи</span>
+              </div>
+              <div class="merch-info">
+                <h3>Визитки и бейджи</h3>
+                <p>Строгий и современный дизайн для официальных встреч, форумов и работы делегаций.</p>
+              </div>
             </div>
-            <div class="merch-info">
-              <h3>Полиграфия и реклама</h3>
-              <p>Благодарственные письма, афиши мероприятий и широкоформатные баннеры для улиц.</p>
+
+            <div class="merch-card">
+              <div class="merch-image-placeholder bg-img-letter">
+                <span class="merch-label">Пример: благодарственное письмо</span>
+              </div>
+              <div class="merch-info">
+                <h3>Благодарственные письма</h3>
+                <p>Официальные благодарности партнёрам, педагогам и участникам проекта за вклад в развитие детской дипломатии.</p>
+              </div>
             </div>
+
+            <div class="merch-card">
+              <div class="merch-image-placeholder bg-img-merch">
+                <span class="merch-label">Пример: сувенирная продукция</span>
+              </div>
+              <div class="merch-info">
+                <h3>Сувенирная продукция</h3>
+                <p>Блокноты, ручки, значки и шопперы с фирменной символикой для участников и партнеров.</p>
+              </div>
+            </div>
+
+            <div class="merch-card">
+              <div class="merch-image-placeholder bg-img-print">
+                <span class="merch-label">Пример: баннеры и грамоты</span>
+              </div>
+              <div class="merch-info">
+                <h3>Полиграфия и реклама</h3>
+                <p>Благодарственные письма, афиши мероприятий и широкоформатные баннеры для улиц.</p>
+              </div>
+            </div>
+
           </div>
 
         </div>
-
-      </div>
-      
-      <div class="pattern-marquee-wrapper">
-        <div class="pattern-marquee-content">
-          <div class="pattern-marquee-block">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
-            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+        
+        <div class="pattern-marquee-wrapper">
+          <div class="pattern-marquee-content">
+            <div class="pattern-marquee-block">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+              <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            </div>
           </div>
         </div>
-      </div>
 
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-logo">Дети — Детям</div>
-      <p class="footer-subtitle">Школа дипломатии через уроки Мира</p>
-      
-      <div class="footer-contacts">
-        <span>📞 +79112345678</span>
-        <span>✉️ DETI.DETYAM.RU</span>
-        <span>📍 ЕКАТЕРИНБУРГ, УЛ. ЛЕНИНА, 1</span>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-logo">Дети — Детям</div>
+        <p class="footer-subtitle">Школа дипломатии через уроки Мира</p>
+        
+        <div class="footer-contacts">
+          <span>📞 +79112345678</span>
+          <span>✉️ DETI.DETYAM.RU</span>
+          <span>📍 ЕКАТЕРИНБУРГ, УЛ. ЛЕНИНА, 1</span>
+        </div>
+        
+        <p class="footer-copyright">© 2026. Все права защищены.</p>
       </div>
-      
-      <p class="footer-copyright">© 2026. Все права защищены.</p>
-    </div>
-  </footer>
+    </footer>
+
+  </div> <!-- Закрытие .page-wrapper -->
 
   <!-- ==================== МОДАЛЬНОЕ ОКНО РЕГИСТРАЦИИ ==================== -->
   <div id="registrationModal" class="modal">
