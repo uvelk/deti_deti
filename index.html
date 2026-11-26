@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дети — детям | Школа дипломатии</title>
+  <meta name="description" content="Международный проект для детей. Учимся дружить, создаем мир!">
+  
+  <style>
+    /* ==================== ПОДКЛЮЧЕНИЕ ВАШИХ ШРИФТОВ ==================== */
+    @font-face {
+      font-family: 'Shonen Namikus';
+      src: url('fonts/ShonenNamikus-Bold.woff2') format('woff2'),
+           url('ofont.ru_Shonen.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Shonen Namikus';
+      src: url('fonts/ShonenNamikus-Regular.woff2') format('woff2'),
+           url('ofont.ru_Shonen (1).ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans';
+      src: url('fonts/NotoSans-Regular.woff2') format('woff2'),
+           url('NotoSansRegular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans';
+      src: url('fonts/NotoSans-Bold.woff2') format('woff2'),
+           url('NotoSansBold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ==================== ПЕРЕМЕННЫЕ И БАЗА ==================== */
+    :root {
+      --c-kyrgyz: #44ACDC;
+      --c-belarus: #1C62A5;
+      --c-armenia: #F58E25;
+      --c-russia: #E33C3B;
+      --c-tajik: #27A66E;
+      
+      --white: #FFFFFF;
+      --ink: #111827;
+      --muted: #4B5563;
+      --bg-light: #F8FAFC;
+      
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-lg: 0 20px 40px rgba(0,0,0,0.1);
+      --radius-card: 24px;
+      --radius-btn: 50px;
+      
+      --font-main: 'Noto Sans', sans-serif;
+      --font-title: 'Shonen Namikus', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: var(--font-main);
+      font-weight: 400;
+      color: var(--ink);
+      background-color: var(--bg-light);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+    
+    h1, h2, h3, h4, .logo-text, .footer-logo { 
+      font-family: var(--font-title); 
+      font-weight: bold; 
+      line-height: 1.1; 
+    }
+    
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ==================== АНИМАЦИИ ==================== */
+    @keyframes blobMorph {
+      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+      34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+      67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+      100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* ==================== ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ ==================== */
+    .blob {
+      position: absolute;
+      filter: blur(60px);
+      opacity: 0.15;
+      z-index: -1;
+      animation: blobMorph 12s infinite alternate ease-in-out;
+    }
+    .blob-1 { width: 400px; height: 400px; background: var(--c-armenia); top: -100px; right: -100px; }
+    .blob-2 { width: 300px; height: 300px; background: var(--c-belarus); top: 40%; left: -150px; animation-delay: -2s; }
+    .blob-3 { width: 500px; height: 500px; background: var(--c-kyrgyz); bottom: 10%; right: -200px; animation-delay: -4s; }
+
+    /* ==================== ШАПКА ==================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 2px solid rgba(0,0,0,0.05);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+    .logo-block {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+    }
+    .header-logo-img {
+      width: 60px; height: 60px;
+      object-fit: contain;
+    }
+    .logo-text { font-size: 1.2rem; line-height: 1; text-transform: uppercase;}
+    .logo-sub { font-family: var(--font-main); font-size: 0.7rem; color: var(--muted); font-weight: 700; margin-top: 4px; letter-spacing: 1px;}
+    
+    .nav { display: flex; gap: 10px; }
+    .nav-link {
+      font-family: var(--font-main);
+      padding: 10px 20px;
+      border-radius: var(--radius-btn);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--ink);
+      color: var(--white);
+      transform: scale(1.05);
+    }
+
+    /* ==================== КНОПКИ ==================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 32px;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--c-russia), var(--c-armenia));
+      color: var(--white);
+      box-shadow: 0 10px 20px rgba(227, 60, 59, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 30px rgba(227, 60, 59, 0.5); }
+    .btn-blue {
+      background: linear-gradient(135deg, var(--c-kyrgyz), var(--c-belarus));
+      color: var(--white);
+      box-shadow: 0 10px 20px rgba(28, 98, 165, 0.3);
+    }
+    .btn-blue:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 30px rgba(28, 98, 165, 0.5); }
+
+    /* ==================== ГЛАВНЫЙ ЭКРАН (HERO) ==================== */
+    .hero { padding: 80px 0; position: relative; overflow: hidden; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--c-belarus), var(--c-kyrgyz));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 90%;
+    }
+    .hero-art { position: relative; }
+    .hero-logo-main {
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+      animation: float 6s ease-in-out infinite; 
+    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+    /* ==================== БЕГУЩИЕ СТРОКИ ==================== */
+    .marquee-wrapper {
+      background: var(--ink);
+      color: var(--white);
+      padding: 20px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transform: rotate(-2deg) scale(1.05);
+      margin: 40px 0;
+      display: flex;
+    }
+    .marquee-content {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      animation: marquee 50s linear infinite;
+      font-family: var(--font-title);
+      font-weight: bold;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+    .marquee-block { display: flex; align-items: center; flex-shrink: 0; }
+    .marquee-block span { color: var(--c-armenia); margin: 0 20px; }
+
+    .pattern-marquee-wrapper {
+      background: var(--white);
+      overflow: hidden;
+      display: flex;
+      padding: 20px 0;
+      margin: 40px; 
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.05); 
+    }
+    .pattern-marquee-content { display: flex; width: max-content; will-change: transform; }
+    .pattern-marquee-block { display: flex; flex-shrink: 0; }
+    .pattern-marquee-img { height: 80px; width: auto; display: block; }
+
+    /* ==================== СЕКЦИИ ==================== */
+    .section { padding: 80px 0; position: relative; }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .section-title.left { text-align: left; }
+
+    /* ==================== СЕТКИ КАРТОЧЕК ==================== */
+    .grid-4 { display: grid; gap: 24px; grid-template-columns: repeat(4, 1fr); }
+    .grid-2 { display: grid; gap: 24px; grid-template-columns: repeat(2, 1fr); }
+
+    .card-bright {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+    .card-bright:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--c-kyrgyz);
+    }
+    .card-img {
+      width: 100%;
+      height: 180px; 
+      object-fit: cover; 
+      border-radius: 12px; 
+      margin-bottom: 20px; 
+    }
+    .card-bright h3 { font-size: 1.4rem; margin-bottom: 15px; }
+    .card-bright p { font-size: 1rem; color: var(--muted); }
+
+    .pill { font-family: var(--font-main); padding: 6px 14px; border-radius: var(--radius-btn); font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 15px; width: max-content; }
+    .pill-blue { background: rgba(68, 172, 220, 0.15); color: var(--c-belarus); }
+    .pill-orange { background: rgba(245, 142, 37, 0.15); color: #c46d15; }
+
+    /* ==================== БРЕНДБУК СТРАНИЦА ==================== */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .color-swatch { border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--white); }
+    .swatch-visual { height: 150px; }
+    .swatch-info { padding: 20px; }
+    .swatch-hex { font-family: monospace; font-size: 1.2rem; font-weight: 800; display: block; margin-bottom: 5px;}
+    .swatch-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.3; }
+
+    .logo-display { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+    .logo-box {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      min-height: 250px;
+    }
+    .logo-img-display { width: 140px; height: 140px; object-fit: contain; margin-bottom: 20px; }
+    
+    .motto-text {
+      font-family: var(--font-title);
+      font-weight: normal;
+      font-size: 1.8rem;
+      color: var(--c-belarus);
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .motto-label {
+      font-family: var(--font-title);
+      font-size: 2.8rem; 
+      font-weight: bold;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: block;
+      line-height: 1;
+    }
+
+    .patterns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .pattern-item { background: var(--white); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); aspect-ratio: 1 / 1; }
+    .pattern-img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ==================== БЛОК МЕРЧА ==================== */
+    .merch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .merch-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .merch-image-placeholder {
+      position: relative;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      text-align: center;
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    .merch-label {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-title);
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: var(--white);
+  text-shadow:
+    /* Ядро — плотная чёрная обводка, чтобы буквы не «плавали» */
+    0 0 2px rgba(0,0,0,1),
+    0 0 4px rgba(0,0,0,1),
+    /* Средние слои — мягкое чёрное свечение вокруг букв */
+    0 0 8px rgba(0,0,0,0.98),
+    0 0 14px rgba(0,0,0,0.92),
+    0 0 22px rgba(0,0,0,0.85),
+    /* Дальний градиент — растушёвка в прозрачность */
+    0 0 34px rgba(0,0,0,0.7),
+    0 0 48px rgba(0,0,0,0.5),
+    /* Лёгкая тень вниз для объёма */
+    0 3px 8px rgba(0,0,0,0.95);
+  letter-spacing: 0.5px;
+  line-height: 1.25;
+}
+
+    /* ==================== КАРТИНКИ ПЛАШЕК МЕРЧА ==================== */
+    .bg-img-business { background-image: url('brasl_vis.png'); }
+    /* Благодарственное письмо: горизонтальная картинка, cover — заполняет без искажений */
+    .bg-img-letter   { background-image: url('Design_thank_you_letter_layout_3651aed5_2K.png'); }
+    .bg-img-merch    { background-image: url('pen.png'); }
+    .bg-img-print    { background-image: url('banner.png'); }
+
+    .merch-info {
+      padding: 24px;
+    }
+    .merch-info h3 { font-size: 1.3rem; margin-bottom: 10px; }
+    .merch-info p { font-size: 0.95rem; color: var(--muted); }
+
+    /* ==================== ПОДВАЛ ==================== */
+    .footer { background: var(--ink); color: var(--white); padding: 60px 0; text-align: center; }
+    .footer-logo { font-size: 2rem; text-transform: uppercase; margin-bottom: 10px; }
+    .footer-subtitle { color: var(--white); font-size: 1.1rem; margin-bottom: 25px; }
+    .footer-contacts { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 30px 0; font-size: 1.1rem; color: var(--white); }
+    .footer-contacts span { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+    .footer-copyright { margin-top: 30px; font-size: 0.9rem; color: rgba(255,255,255,0.4); }
+
+    /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      background-color: rgba(17, 24, 39, 0.7); 
+      backdrop-filter: blur(5px);
+      align-items: center; 
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-content {
+      background-color: var(--white);
+      padding: 40px;
+      border-radius: var(--radius-card);
+      width: 100%;
+      max-width: 500px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted);
+      background: none;
+      border: none;
+    }
+    .close-btn:hover { color: var(--c-russia); }
+    
+    .modal-content h3 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--muted);
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--c-belarus);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    /* ==================== МОДАЛЬНОЕ ОКНО МЕРОПРИЯТИЙ (АККОРДЕОН) ==================== */
+    .activity-modal-content {
+      max-width: 620px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .activity-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .activity-item {
+      background: var(--bg-light);
+      border-left: 4px solid var(--c-kyrgyz);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.45;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background 0.2s;
+    }
+    .activity-item:hover { background: #eef2f7; }
+    .activity-item:nth-child(2n) { border-left-color: var(--c-armenia); }
+    .activity-item:nth-child(3n) { border-left-color: var(--c-belarus); }
+    .activity-item:nth-child(4n) { border-left-color: var(--c-russia); }
+    .activity-item:nth-child(5n) { border-left-color: var(--c-tajik); }
+
+    .activity-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+    }
+    .activity-name {
+      font-weight: 700;
+      font-size: 1rem;
+      flex: 1;
+    }
+    .activity-toggle {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--c-belarus);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      line-height: 1;
+      width: 22px;
+      text-align: center;
+    }
+    .activity-item.open .activity-toggle { transform: rotate(45deg); }
+
+    .activity-details {
+      display: none;
+      padding: 0 18px 16px;
+      font-size: 0.93rem;
+      color: var(--muted);
+      border-top: 1px dashed rgba(0,0,0,0.12);
+      padding-top: 12px;
+    }
+    .activity-item.open .activity-details { display: block; }
+    .activity-details p { margin-bottom: 6px; }
+    .activity-details p:last-child { margin-bottom: 0; }
+    .activity-details b { color: var(--ink); }
+
+    /* Утилиты */
+    .page-view { display: none; }
+    .page-view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ==================== МЕДИА-ЗАПРОСЫ ==================== */
+    @media (max-width: 1100px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-desc { margin: 0 auto 30px; }
+      .hero-art { order: -1; margin-bottom: 30px; }
+      .header-inner { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
+      .hero h1 { font-size: 3rem; }
+      .hero-logo-main { max-width: 300px; }
+      .logo-text { font-size: 1rem; }
+      .motto-text { font-size: 1.5rem; }
+      .motto-label { font-size: 2.2rem; }
+    }
+
+    @media (max-width: 768px) {
+      .grid-4, .grid-2, .merch-grid { grid-template-columns: 1fr; }
+      .section { padding: 50px 0; }
+      .section-title { font-size: 2rem; }
+      .card-bright { padding: 20px; }
+      .card-img { height: 160px; } 
+      .hero h1 { font-size: 2.2rem; }
+      .hero-desc { font-size: 1rem; }
+      .btn { padding: 14px 24px; font-size: 1rem; width: 100%; }
+      .hero-actions { flex-direction: column; }
+      .marquee-content { font-size: 1.2rem; }
+      .logo-img-display { width: 100px; height: 100px; }
+      .motto-text { font-size: 1.3rem; }
+      .motto-label { font-size: 2rem; }
+      .footer-contacts { flex-direction: column; gap: 15px; }
+      .patterns-grid { grid-template-columns: 1fr; }
+      .pattern-marquee-img { height: 50px; } 
+      .form-row { grid-template-columns: 1fr; }
+      .modal-content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo-block" onclick="switchPage('index')">
+        <img src="logo_color.png" alt="Логотип" class="header-logo-img">
+        <div>
+          <div class="logo-text">Дети — Детям</div>
+          <div class="logo-sub">Школа дипломатии</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <div id="nav-index" class="nav-link active" onclick="switchPage('index')">О проекте</div>
+        <div id="nav-brandbook" class="nav-link" onclick="switchPage('brandbook')">Айдентика</div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="page-index" class="page-view active">
+    
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <h1>Учимся дружить<br><span>Создаём <br> мир</span></h1>
+          <p class="hero-desc">
+            Международный проект, где школьники 10–14 лет из России, Армении, Беларуси, Кыргызстана и Таджикистана объединяются для творчества и дипломатии.
+          </p>
+          <div class="hero-actions" style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="scrollToSection('about')">Узнать больше</button>
+            <button class="btn btn-blue" onclick="switchPage('brandbook')">Смотреть стиль</button>
+          </div>
+        </div>
+        <div class="hero-art reveal" style="transition-delay: 0.2s;">
+          <img src="logo_color.png" alt="Главный логотип" class="hero-logo-main">
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee-wrapper">
+      <div class="marquee-content">
+        <div class="marquee-block">
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+        </div>
+        <div class="marquee-block">
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+          МИР <span>★</span> ДРУЖБА <span>★</span> ТВОРЧЕСТВО <span>★</span> ДИПЛОМАТИЯ <span>★</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title reveal">Что мы делаем?</h2>
+        
+        <div class="grid-4">
+          <div class="card-bright reveal" onclick="openActivityModal('telemos')">
+            <img src="children1.jpg" alt="Телемосты" class="card-img">
+            <h3>Телемосты</h3>
+            <p>Регулярное общение и обмен опытом между школьниками из разных стран в режиме реального времени.</p>
+          </div>
+
+          <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openActivityModal('master')">
+            <img src="children2.jpg" alt="Мастер-классы" class="card-img">
+            <h3>Мастер-классы</h3>
+            <p>Создаем видеоролики, пишем декларации и рисуем. Учимся каллиграфии и русскому языку.</p>
+          </div>
+
+          <div class="card-bright reveal" style="transition-delay: 0.2s;" onclick="openActivityModal('culture')">
+            <img src="children3.jpg" alt="Культурный обмен" class="card-img">
+            <h3>Культурный обмен</h3>
+            <p>Реальные визиты делегаций в страны-партнеры, знакомство с традициями и обычаями.</p>
+          </div>
+
+          <div class="card-bright reveal" style="transition-delay: 0.3s;" onclick="openActivityModal('products')">
+            <img src="children4.png" alt="Итоговые продукты" class="card-img">
+            <h3>Итоговые продукты</h3>
+            <p>Создание общего Манифеста Мира, книжки-сказки и проведение передвижных выставок.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background: var(--white); border-radius: 40px; margin: 0 20px;">
+      <div class="container">
+        <h2 class="section-title left reveal">Кто участвует?</h2>
+        <div class="grid-2">
+          <div class="card-bright reveal" onclick="openModal()">
+            <div class="pill pill-blue">Основные участники</div>
+            <h3>Дети 10–14 лет</h3>
+            <p>Любознательные школьники, готовые творить, общаться и узнавать новое о культурах других стран. <b>(Нажмите для записи)</b></p>
+          </div>
+          <div class="card-bright reveal" style="transition-delay: 0.1s;" onclick="openModal()">
+            <div class="pill pill-orange">Помощники</div>
+            <h3>Наставники и дипломаты</h3>
+            <p>Педагоги, эксперты и дипломаты, которые поддерживают ребят и делятся своим опытом. <b>(Нажмите для записи)</b></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <main id="page-brandbook" class="page-view">
+    <section class="section" style="padding-bottom: 0;"> 
+      <div class="container">
+        <h2 class="section-title">Визуальный стиль</h2>
+
+        <div class="logo-display">
+          <div class="logo-box">
+            <img src="logo_color.png" alt="Основной" class="logo-img-display">
+            <h4>Основная версия</h4>
+          </div>
+          <div class="logo-box">
+            <img src="logo_black.png" alt="Черно-белая версия" class="logo-img-display">
+            <h4>Черно-белая версия</h4>
+          </div>
+          <div class="logo-box">
+            <span class="motto-label">Слоган</span>
+            <div class="motto-text">Язык дружбы — язык мира</div>
+          </div>
+        </div>
+
+        <h2 class="section-title left" style="margin-top: 80px;">Цвета проекта</h2>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="swatch-visual" style="background: #44ACDC;"></div>
+            <div class="swatch-info">
+              <span class="swatch-hex">#44ACDC</span>
+              <div class="swatch-desc"><b>Кыргызстан.</b> Цвет высокого неба и горных вершин.</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-visual" style="background: #1C62A5;"></div>
+            <div class="swatch-info">
+              <span class="swatch-hex">#1C62A5</span>
+              <div class="swatch-desc"><b>Беларусь.</b> Цвет мира, стабильности и мудрости.</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-visual" style="background: #F58E25;"></div>
+            <div class="swatch-info">
+              <span class="swatch-hex">#F58E25</span>
+              <div class="swatch-desc"><b>Армения.</b> Тепло солнца, энергия и гостеприимство.</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-visual" style="background: #E33C3B;"></div>
+            <div class="swatch-info">
+              <span class="swatch-hex">#E33C3B</span>
+              <div class="swatch-desc"><b>Россия.</b> Цвет силы, смелости и исторического величия.</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="swatch-visual" style="background: #27A66E;"></div>
+            <div class="swatch-info">
+              <span class="swatch-hex">#27A66E</span>
+              <div class="swatch-desc"><b>Таджикистан.</b> Цвет плодородия, молодости и процветания.</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title left" style="margin-top: 80px;">Паттерны и графика</h2>
+        
+        <div class="patterns-grid">
+          <div class="pattern-item">
+            <img src="patt1.png" alt="Паттерн 1" class="pattern-img">
+          </div>
+          <div class="pattern-item">
+            <img src="patt2.png" alt="Паттерн 2" class="pattern-img">
+          </div>
+        </div>
+
+        <h2 class="section-title left" style="margin-top: 80px;">Мерч и полиграфия</h2>
+        <div class="merch-grid">
+          
+          <div class="merch-card">
+            <div class="merch-image-placeholder bg-img-business">
+              <span class="merch-label">Пример: визитки и бейджи</span>
+            </div>
+            <div class="merch-info">
+              <h3>Визитки и бейджи</h3>
+              <p>Строгий и современный дизайн для официальных встреч, форумов и работы делегаций.</p>
+            </div>
+          </div>
+
+          <!-- Благодарственное письмо (заменило соцсети) -->
+          <div class="merch-card">
+            <div class="merch-image-placeholder bg-img-letter">
+              <span class="merch-label">Пример: благодарственное письмо</span>
+            </div>
+            <div class="merch-info">
+              <h3>Благодарственные письма</h3>
+              <p>Официальные благодарности партнёрам, педагогам и участникам проекта за вклад в развитие детской дипломатии.</p>
+            </div>
+          </div>
+
+          <div class="merch-card">
+            <div class="merch-image-placeholder bg-img-merch">
+              <span class="merch-label">Пример: сувенирная продукция</span>
+            </div>
+            <div class="merch-info">
+              <h3>Сувенирная продукция</h3>
+              <p>Блокноты, ручки, значки и шопперы с фирменной символикой для участников и партнеров.</p>
+            </div>
+          </div>
+
+          <div class="merch-card">
+            <div class="merch-image-placeholder bg-img-print">
+              <span class="merch-label">Пример: баннеры и грамоты</span>
+            </div>
+            <div class="merch-info">
+              <h3>Полиграфия и реклама</h3>
+              <p>Благодарственные письма, афиши мероприятий и широкоформатные баннеры для улиц.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      
+      <div class="pattern-marquee-wrapper">
+        <div class="pattern-marquee-content">
+          <div class="pattern-marquee-block">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+            <img src="pat.png" alt="Паттерн" class="pattern-marquee-img">
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-logo">Дети — Детям</div>
+      <p class="footer-subtitle">Школа дипломатии через уроки Мира</p>
+      
+      <div class="footer-contacts">
+        <span>📞 +79112345678</span>
+        <span>✉️ DETI.DETYAM.RU</span>
+        <span>📍 ЕКАТЕРИНБУРГ, УЛ. ЛЕНИНА, 1</span>
+      </div>
+      
+      <p class="footer-copyright">© 2026. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <!-- ==================== МОДАЛЬНОЕ ОКНО РЕГИСТРАЦИИ ==================== -->
+  <div id="registrationModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <h3>Регистрация на мероприятие</h3>
+      <form onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Имя</label>
+            <input type="text" required placeholder="Иван">
+          </div>
+          <div class="form-group">
+            <label>Фамилия</label>
+            <input type="text" required placeholder="Иванов">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Электронная почта</label>
+          <input type="email" required placeholder="ivan@example.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Возраст</label>
+            <input type="number" min="10" max="99" required placeholder="14">
+          </div>
+          <div class="form-group">
+            <label>Страна</label>
+            <select id="countrySelect" required onchange="toggleOther('country')">
+              <option value="" disabled selected>Выберите страну</option>
+              <option value="russia">Россия</option>
+              <option value="belarus">Беларусь</option>
+              <option value="armenia">Армения</option>
+              <option value="tajikistan">Таджикистан</option>
+              <option value="kyrgyzstan">Кыргызстан</option>
+              <option value="other">Другая</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="otherCountryGroup" style="display: none;">
+          <label>Укажите вашу страну</label>
+          <input type="text" id="otherCountryInput" placeholder="Например, Казахстан">
+        </div>
+
+        <div class="form-group">
+          <label>Город</label>
+          <input type="text" required placeholder="Москва">
+        </div>
+
+        <div class="form-group">
+          <label>Откуда узнали о проекте?</label>
+          <select id="sourceSelect" required onchange="toggleOther('source')">
+            <option value="" disabled selected>Выберите вариант</option>
+            <option value="vk">ВКонтакте</option>
+            <option value="tg">Telegram</option>
+            <option value="teacher">От педагога / в школе</option>
+            <option value="friends">От друзей / знакомых</option>
+            <option value="other">Другое</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="otherSourceGroup" style="display: none;">
+          <label>Укажите источник</label>
+          <input type="text" id="otherSourceInput" placeholder="Например, на городском фестивале">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== МОДАЛЬНОЕ ОКНО МЕРОПРИЯТИЙ ==================== -->
+  <div id="activityModal" class="modal">
+    <div class="modal-content activity-modal-content">
+      <button class="close-btn" onclick="closeActivityModal()">&times;</button>
+      <h3 id="activityModalTitle">Мероприятия</h3>
+      <p style="text-align:center; font-size:0.9rem; color:var(--muted); margin-bottom:10px;">Нажмите на мероприятие, чтобы увидеть дату, время и формат</p>
+      <ul class="activity-list" id="activityModalList"></ul>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ==================== */
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      
+      document.getElementById('page-' + pageId).classList.add('active');
+      document.getElementById('nav-' + pageId).classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      setTimeout(() => { checkReveal(); }, 100);
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function checkReveal() {
+      var reveals = document.querySelectorAll(".reveal");
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 100;
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+           if(!reveals[i].closest('.page-view.active')) {
+             reveals[i].classList.remove("active");
+           }
+        }
+      }
+    }
+
+    window.addEventListener("scroll", checkReveal);
+    window.addEventListener("load", checkReveal);
+
+    /* ==================== МОДАЛКА РЕГИСТРАЦИИ ==================== */
+    function openModal() {
+      document.getElementById('registrationModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('registrationModal').style.display = 'none';
+      if (document.getElementById('activityModal').style.display !== 'flex') {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    /* ==================== ДОП. ПОЛЯ ФОРМЫ ==================== */
+    function toggleOther(type) {
+      var select, group, input;
+      if (type === 'country') {
+        select = document.getElementById('countrySelect');
+        group  = document.getElementById('otherCountryGroup');
+        input  = document.getElementById('otherCountryInput');
+      } else {
+        select = document.getElementById('sourceSelect');
+        group  = document.getElementById('otherSourceGroup');
+        input  = document.getElementById('otherSourceInput');
+      }
+      var show = select.value === 'other';
+      group.style.display = show ? 'block' : 'none';
+      input.required = show;
+      if (!show) input.value = '';
+    }
+
+    /* ==================== ДАННЫЕ МЕРОПРИЯТИЙ ==================== */
+    var activitiesData = {
+      telemos: {
+        title: 'Телемосты — примеры мероприятий',
+        items: [
+          { name: 'Телемост «Москва — Минск: города-побратимы»', date: '12 марта 2026', time: '15:00–16:30', format: 'Онлайн (Zoom)' },
+          { name: 'Онлайн-встреча «Новый год и Навруз: общие традиции»', date: '20 марта 2026', time: '14:00–15:30', format: 'Онлайн (Zoom)' },
+          { name: 'Круглый стол «Школьное самоуправление: как это устроено»', date: '3 апреля 2026', time: '16:00–17:30', format: 'Онлайн (Zoom)' },
+          { name: 'Презентация «Моя страна в 10 фотографиях»', date: '15 апреля 2026', time: '13:00–14:00', format: 'Онлайн (Zoom)' },
+          { name: 'Викторина дружбы между командами пяти стран', date: '25 апреля 2026', time: '15:00–16:00', format: 'Онлайн (Zoom)' },
+          { name: 'Встреча с гостями «Профессии будущего»', date: '6 мая 2026', time: '14:00–15:30', format: 'Онлайн (Zoom)' }
+        ]
+      },
+      master: {
+        title: 'Мастер-классы — примеры мероприятий',
+        items: [
+          { name: 'Каллиграфия: пишем слово «мир» на языках участников', date: '18 марта 2026', time: '12:00–13:30', format: 'Гибрид (офлайн + трансляция)' },
+          { name: 'Видеоролик о своей школе за 60 секунд', date: '5 апреля 2026', time: '15:00–16:30', format: 'Онлайн' },
+          { name: 'Урок русского языка в игровой форме', date: '22 апреля 2026', time: '11:00–12:00', format: 'Онлайн' },
+          { name: 'Рисование национальных орнаментов', date: '10 мая 2026', time: '13:00–14:30', format: 'Гибрид' },
+          { name: 'Открытка дружбы для сверстника из другой страны', date: '18 мая 2026', time: '12:00–13:00', format: 'Офлайн (в школах-партнёрах)' },
+          { name: 'Основы публичного выступления юного дипломата', date: '25 мая 2026', time: '15:00–16:30', format: 'Онлайн' }
+        ]
+      },
+      culture: {
+        title: 'Культурный обмен — примеры мероприятий',
+        items: [
+          { name: 'Визит делегации в Ереван: школа и музей', date: '14–18 апреля 2026', time: 'в течение дня', format: 'Офлайн (Армения)' },
+          { name: 'Фестиваль национальных кухонь «Вкус дружбы»', date: '1 июня 2026', time: '12:00–17:00', format: 'Офлайн (все страны)' },
+          { name: 'Выставка «Куклы народов мира»', date: '15 июня 2026', time: '10:00–19:00', format: 'Офлайн (музей-партнёр)' },
+          { name: 'Поездка в Минск: хакатон юных дипломатов', date: '5–8 июля 2026', time: 'в течение дня', format: 'Офлайн (Беларусь)' },
+          { name: 'День Таджикистана в школе-партнёре', date: '20 сентября 2026', time: '10:00–15:00', format: 'Офлайн (Душанбе)' },
+          { name: 'Экскурсия по Кыргызстану для гостей проекта', date: '10–14 октября 2026', time: 'в течение дня', format: 'Офлайн (Кыргызстан)' }
+        ]
+      },
+      products: {
+        title: 'Итоговые продукты — примеры',
+        items: [
+          { name: 'Манифест Мира — совместный документ детей', date: '1 октября 2026', time: 'весь день', format: 'Гибрид (голосование онлайн + подписание офлайн)' },
+          { name: 'Книжка-сказка «Дружба без границ»', date: '15 ноября 2026', time: 'весь день', format: 'Офлайн (презентация) + PDF онлайн' },
+          { name: 'Передвижная выставка рисунков и плакатов', date: '20 ноября 2026', time: '10:00–18:00', format: 'Офлайн (галерея)' },
+          { name: 'Видеоальманах «Один день из жизни сверстника»', date: '5 декабря 2026', time: 'весь день', format: 'Онлайн-премьера' },
+          { name: 'Календарь проекта «Дети — детям» на год', date: '10 декабря 2026', time: 'весь день', format: 'Офлайн (печать) + онлайн-версия' },
+          { name: 'Итоговый форум и награждение участников', date: '20 декабря 2026', time: '11:00–17:00', format: 'Гибрид (Екатеринбург + трансляция)' }
+        ]
+      }
+    };
+
+    /* ==================== МОДАЛКА МЕРОПРИЯТИЙ ==================== */
+    function openActivityModal(key) {
+      var data = activitiesData[key];
+      if (!data) return;
+      document.getElementById('activityModalTitle').textContent = data.title;
+      var list = document.getElementById('activityModalList');
+      list.innerHTML = '';
+
+      data.items.forEach(function(item) {
+        var li = document.createElement('li');
+        li.className = 'activity-item';
+        li.onclick = function() { li.classList.toggle('open'); };
+
+        var head = document.createElement('div');
+        head.className = 'activity-head';
+
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'activity-name';
+        nameSpan.textContent = item.name;
+
+        var toggleSpan = document.createElement('span');
+        toggleSpan.className = 'activity-toggle';
+        toggleSpan.textContent = '+';
+
+        head.appendChild(nameSpan);
+        head.appendChild(toggleSpan);
+
+        var details = document.createElement('div');
+        details.className = 'activity-details';
+        details.innerHTML =
+          '<p><b>Дата:</b> ' + item.date + '</p>' +
+          '<p><b>Время:</b> ' + item.time + '</p>' +
+          '<p><b>Формат:</b> ' + item.format + '</p>';
+
+        li.appendChild(head);
+        li.appendChild(details);
+        list.appendChild(li);
+      });
+
+      document.getElementById('activityModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeActivityModal() {
+      document.getElementById('activityModal').style.display = 'none';
+      if (document.getElementById('registrationModal').style.display !== 'flex') {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    /* ==================== ЗАКРЫТИЕ ПО КЛИКУ ВНЕ ОКНА / ESC ==================== */
+    window.onclick = function(event) {
+      var regModal = document.getElementById('registrationModal');
+      var actModal = document.getElementById('activityModal');
+      if (event.target === regModal) closeModal();
+      if (event.target === actModal) closeActivityModal();
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeActivityModal();
+      }
+    });
+
+    /* ==================== ОТПРАВКА ФОРМЫ ==================== */
+    function submitForm(event) {
+      event.preventDefault();
+      alert('Спасибо! Заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.');
+      closeModal();
+      event.target.reset();
+      toggleOther('country');
+      toggleOther('source');
+    }
+  </script>
+</body>
+</html>
